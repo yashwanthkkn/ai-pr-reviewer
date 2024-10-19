@@ -720,13 +720,16 @@ ${chain}
   getHighestReviewedCommitId(
     commitIds: string[],
     reviewedCommitIds: string[]
-  ): string {
+  ): string | null {
+    const reviewedSet = new Set(reviewedCommitIds);
+  
+    // Iterate in reverse order
     for (let i = commitIds.length - 1; i >= 0; i--) {
-      if (reviewedCommitIds.includes(commitIds[i])) {
-        return commitIds[i]
+      if (reviewedSet.has(commitIds[i])) {
+        return commitIds[i]; // Return the first match (highest reviewed commit)
       }
     }
-    return ''
+    return ''; // Return null if no reviewed commit is found
   }
 
   async getAllCommitIds(): Promise<string[]> {
